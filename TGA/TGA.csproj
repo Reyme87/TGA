@@ -8,4 +8,10 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\Base\" />
+    <Folder Include="ViewModels\Base\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>
