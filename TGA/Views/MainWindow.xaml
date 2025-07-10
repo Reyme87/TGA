@@ -5,8 +5,50 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TGA"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="600" Width="900" FontFamily="{StaticResource MainFont}" Background="{StaticResource ControlsColor}" Foreground="{StaticResource ForeColor}">
 
+    <Window.Resources>
+        <ResourceDictionary Source="ResourceDictionary.xaml"/>
+    </Window.Resources>
+
+    <Grid Background="{StaticResource BackColor}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <ListBox Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Padding="10 80 10 10" FontSize="20" BorderBrush="{StaticResource ControlsColor}">
+            <ListBoxItem Margin="0,5,0,10">Элемент примера 1</ListBoxItem>
+            <ListBoxItem Margin="0,5,0,10">Элемент примера 2</ListBoxItem>
+            <ListBoxItem Margin="0,5,0,10">Элемент примера 3</ListBoxItem>
+            <ListBoxItem Margin="0,5,0,10">Элемент примера 4</ListBoxItem>
+            <ListBoxItem Margin="0,5,0,10">Элемент примера 5</ListBoxItem>
+            <ListBoxItem Margin="0,5,0,10">Элемент примера 6</ListBoxItem>
+            <ListBoxItem Margin="0,5,0,10">Элемент примера 7</ListBoxItem>
+            <ListBoxItem Margin="0,5,0,10">Элемент примера 8</ListBoxItem>
+            <ListBoxItem Margin="0,5,0,10">Элемент примера 9</ListBoxItem>
+            <ListBoxItem Margin="0,5,0,10">Элемент примера 10</ListBoxItem>
+        </ListBox>
+        <Label Content="Ваши каналы" Foreground="{StaticResource ForeColor}" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+        <Border Grid.Column="1" Grid.ColumnSpan="2" Background="{StaticResource ControlsColor}" BorderBrush="Black" BorderThickness="0.75">
+            <StackPanel>
+                <Label Content="Канал: Чемпионат" Foreground="{StaticResource ForeColor}" FontSize="22" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
+                <Label Content="Автор: @championat" Foreground="{StaticResource ForeColor}" FontSize="22" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10 0 5 5"/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="3" CornerRadius="15" Margin="15 15 100 15" Background="{StaticResource ControlsColor}">
+            <StackPanel>
+                <Label Content="Канал: Чемпионат" Foreground="{StaticResource ForeColor}" FontSize="22" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>
