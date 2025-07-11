@@ -20,5 +20,10 @@ namespace TGA
         {
             InitializeComponent();
         }
+
+        private void ListBox_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
+        {
+
+        }
     }
 }

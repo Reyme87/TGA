@@ -18,13 +18,13 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="0.35*"/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <ListBox Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Padding="10 80 10 10" FontSize="20" BorderBrush="{StaticResource ControlsColor}">
+        <ListBox Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Padding="10 60 10 10" FontSize="20" ScrollViewer.VerticalScrollBarVisibility="Hidden">
             <ListBoxItem Margin="0,5,0,10">Элемент примера 1</ListBoxItem>
             <ListBoxItem Margin="0,5,0,10">Элемент примера 2</ListBoxItem>
             <ListBoxItem Margin="0,5,0,10">Элемент примера 3</ListBoxItem>
@@ -35,20 +35,46 @@
             <ListBoxItem Margin="0,5,0,10">Элемент примера 8</ListBoxItem>
             <ListBoxItem Margin="0,5,0,10">Элемент примера 9</ListBoxItem>
             <ListBoxItem Margin="0,5,0,10">Элемент примера 10</ListBoxItem>
+            <ListBoxItem Margin="0,5,0,10">Элемент примера 10</ListBoxItem>
+            <ListBoxItem Margin="0,5,0,10">Элемент примера 10</ListBoxItem>
+            <ListBoxItem Margin="0,5,0,10">Элемент примера 10</ListBoxItem>
+            <ListBoxItem Margin="0,5,0,10">Элемент примера 10</ListBoxItem>
+            <ListBoxItem Margin="0,5,0,10">Элемент примера 10</ListBoxItem>
         </ListBox>
         <Label Content="Ваши каналы" Foreground="{StaticResource ForeColor}" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
         <Border Grid.Column="1" Grid.ColumnSpan="2" Background="{StaticResource ControlsColor}" BorderBrush="Black" BorderThickness="0.75">
-            <StackPanel>
-                <Label Content="Канал: Чемпионат" Foreground="{StaticResource ForeColor}" FontSize="22" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
-                <Label Content="Автор: @championat" Foreground="{StaticResource ForeColor}" FontSize="22" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10 0 5 5"/>
-            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Grid.ColumnSpan="2">
+                    <Label Content="Канал: Чемпионат" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 0 5 0"/>
+                    <Label Content="Автор: @championat" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10 -5 5 0"/>
+                </StackPanel>
+                <Button Style="{StaticResource BaseButtonStyle}" Content="Извлечь данные" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center" Height="40" Margin="5"/>
+            </Grid>
         </Border>
 
-        <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="3" CornerRadius="15" Margin="15 15 100 15" Background="{StaticResource ControlsColor}">
-            <StackPanel>
-                <Label Content="Канал: Чемпионат" Foreground="{StaticResource ForeColor}" FontSize="22" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
-            </StackPanel>
+        <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="3">
+            <ListBox d:ItemsSource="{d:SampleData ItemCount=3}" Background="{StaticResource BackColor}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <ListBoxItem>
+                            <Border CornerRadius="10" Margin="15 10" Background="{StaticResource ControlsColor}" HorizontalAlignment="Left" MaxWidth="450" MinWidth="100">
+                                <StackPanel>
+                                    <Label Content="Тематика поста: Спорт" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
+                                    <TextBlock Text="Сообщение поста: Какое-то сообщение длинное" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10 5 5 0"/>
+                                    <Label Content="Кол-во просмотров: 47.6К" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
+                                    <Label Content="Кол-во реакций: 1245" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
+                                </StackPanel>
+                            </Border>
+                        </ListBoxItem>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Border>
     </Grid>
 </Window>
