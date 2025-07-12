@@ -8,11 +8,11 @@ namespace TGA.Models
 {
     class ChannelModel
     {
-        private string _id;
+        private long _id;
         private string _name;
         private string _author;
 
-        public string Id
+        public long Id
         {
             get => _id;
             set => _id = value;
@@ -28,6 +28,13 @@ namespace TGA.Models
         {
             get => _author;
             set => _author = value;
+        }
+
+        public ChannelModel(long id, string name, string author)
+        {
+            Id = id;
+            Name = name;
+            Author = author;
         }
     }
 }

@@ -15,13 +15,13 @@ namespace TGA.Models
         private static MLContext _mlContext;
         private static PredictionEngine<TextData, TextPrediction> _predEngine;
 
-        public static void LoadModel(string modelPath)
+        public void LoadModel(string modelPath)
         {
             _mlContext = new MLContext(seed: 0);
             _loadedModel = _mlContext.Model.Load(modelPath, out var modelInputSchema);
         }
 
-        public static string PredictCategory(string text)
+        public string PredictCategory(string text)
         {
             TextData singleIssue = new TextData() { Text = text };
 
