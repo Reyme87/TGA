@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.VisualBasic;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,6 +16,7 @@ namespace TGA.Models
 {
     internal class TgParser
     {
+        private readonly SemaphoreSlim _connectionLock = new SemaphoreSlim(1, 1);
         private static Client _client;
         //private readonly static string _outputDir = "TelegramData";
         private static User _user;
@@ -21,37 +24,43 @@ namespace TGA.Models
         private static readonly string _modelPath = Path.Combine(Environment.CurrentDirectory, "Data", "TextClassificationModel.zip");
 
         private static long _selectedID;
-
-        //public static Dictionary<long, ChatBase> Chats { get; set; } = new Dictionary<long, ChatBase>();
         public Func<string, string> ConfigFunc { get; set; }
 
         private static Classifier _classifier;
 
         public TgParser(Func<string, string> configFunc = null)
         {
-            if (configFunc == null)
-            {
-                ConfigFunc = Config;
-            }
-            else
-            {
-                ConfigFunc = configFunc;
-            }
+            ConfigFunc = configFunc ?? Config;
             _client = new Client(ConfigFunc);
             _classifier = new Classifier();
             _classifier.LoadModel(_modelPath);
         }
 
-        public static async Task InitializeParser()
+        private async Task InitializeParser()
         {
-            _user = await _client.LoginUserIfNeeded();
+            if (_client.User == null)
+            {
+                await _connectionLock.WaitAsync();
+                try
+                {
+                    if (_client.User == null)
+                    {
+                        _user = await _client.LoginUserIfNeeded();
+                    }
+                }
+                finally
+                {
+                    _connectionLock.Release();
+                }
+            }
         }
 
-        public static async Task<List<ChannelModel>> GetChatsList()
+        public async Task<ObservableCollection<ChannelModel>> GetChatsList()
         {
+            await InitializeParser();
             await LoadChats();
             var chatList = _chats.Values.ToList();
-            var channels = new List<ChannelModel>();
+            var channels = new ObservableCollection<ChannelModel>();
             foreach (var chat in chatList)
             {
                 if (chat is Channel channel)
@@ -69,32 +78,11 @@ namespace TGA.Models
             _chats = dialogs.chats;
         }
 
-        //public static async Task<ChatBase> SelectChat()
-        //{
-        //    var i = 0;
-        //    var chatList = Chats.Values.ToList();
-
-        //    foreach (var chat in chatList)
-        //    {
-        //        if (chat is Channel channel)
-        //        {
-        //            Console.WriteLine($"{++i}. {chat.GetType().Name} {chat.Title} (ID: {chat.ID})");
-        //        }
-        //    }
-
-        //    Console.WriteLine("\nВыберите номер канала (или 0 для отмены):");
-        //    var selected = int.Parse(Console.ReadLine() ?? "0");
-        //    _selectedID = chatList[selected - 1].ID;
-        //    //Console.WriteLine("\nВыберите категорию для канала:");
-        //    //_category = Console.ReadLine();
-
-        //    return selected > 0 ? chatList[selected - 1] : null;
-        //}
-
-        public static async Task<List<MessageData>> ParseMessages(long ID, int limit)
+        public async Task<ObservableCollection<MessageData>> ParseMessages(long ID, int limit)
         {
             _chats.TryGetValue(ID, out ChatBase? chat);
-            var allMessages = new List<MessageData>();
+            _selectedID = ID;
+            var allMessages = new ObservableCollection<MessageData>();
             var totalCount = 0;
             var offsetId = 0;
             var hasMore = true;
@@ -106,7 +94,7 @@ namespace TGA.Models
                     offsetId,
                     min_id: 0,
                     max_id: 0,
-                    limit: Math.Min(100, limit == 0 ? 100 : limit - totalCount));
+                    limit: 100);
 
                 if (messages.Messages.Length == 0)
                 {
@@ -246,7 +234,7 @@ namespace TGA.Models
             return (reactions, totalCount);
         }
 
-        private static string Config(string what)
+        private string Config(string what)
         {
             switch (what)
             {
@@ -254,11 +242,9 @@ namespace TGA.Models
                 case "api_hash": return Environment.GetEnvironmentVariable("api_hash"); ;
                 case "phone_number": return Environment.GetEnvironmentVariable("phone_number");
                 case "verification_code":
-                    Console.WriteLine("Введите код подтверждения:");
-                    return Console.ReadLine();
+                    return Interaction.InputBox("Verification code:");
                 case "password":
-                    Console.WriteLine("Введите пароль (2FA):");
-                    return Console.ReadLine();
+                    return Interaction.InputBox("Enter 2FA password");
                 case "session_pathname": return "session.dat";
                 default: return null;
             }
