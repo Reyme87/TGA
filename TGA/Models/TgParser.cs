@@ -225,5 +225,10 @@ namespace TGA.Models
             await InitializeParser();
             return _user.username;
         }
+
+        public void Logout()
+        {
+            _client.Auth_LogOut();
+        }
     }
 }
