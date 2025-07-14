@@ -17,7 +17,6 @@ namespace TGA.ViewModels
 
         private readonly static string _outputDir = "TelegramData";
         private Visibility _isVisible;
-        //private static Client _client;
         private ObservableCollection<ChannelModel> _channels;
         private ObservableCollection<MessageData> _messages;
         private string _phoneNumber = "";
@@ -123,6 +122,23 @@ namespace TGA.ViewModels
             return false;
         }
 
+
+
+        #endregion
+
+        #region ExitCommand
+
+        public ICommand ExitCommand { get; }
+
+        public void OnExitCommandExecuted(object p)
+        {
+            LoadInfoAsync("", "phone.json");
+            Parser.Logout();
+            Application.Current.Shutdown();
+        }
+
+        public bool CanExitCommandExecute(object p) => !Equals(Parser, null);
+
         #endregion
 
         #endregion
@@ -132,6 +148,8 @@ namespace TGA.ViewModels
             #region Команды
 
             ExportDataCommand = new RelayCommand(OnExportDataCommandExecuted, CanExportDataCommandExecute);
+
+            ExitCommand = new RelayCommand(OnExitCommandExecuted, CanExitCommandExecute);
 
             #endregion
 
@@ -162,7 +180,7 @@ namespace TGA.ViewModels
                 case "api_id": return Environment.GetEnvironmentVariable("api_id");
                 case "api_hash": return Environment.GetEnvironmentVariable("api_hash");
                 case "phone_number":
-                    if (GetInfo("phone.json") == null)
+                    if (GetInfo("phone.json") == null || GetInfo("phone.json") == "")
                     {
                         _phoneNumber = Interaction.InputBox("Введите номер телефона с +:");
                         LoadInfoAsync(_phoneNumber, "phone.json");
