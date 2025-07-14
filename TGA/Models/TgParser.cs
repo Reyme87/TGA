@@ -1,15 +1,6 @@
-﻿using Microsoft.VisualBasic;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using TL;
-using TL.Methods;
 using WTelegram;
 
 namespace TGA.Models
@@ -18,7 +9,6 @@ namespace TGA.Models
     {
         private readonly SemaphoreSlim _connectionLock = new SemaphoreSlim(1, 1);
         private static Client _client;
-        //private readonly static string _outputDir = "TelegramData";
         private static User _user;
         private static Dictionary<long, ChatBase> _chats = new Dictionary<long, ChatBase>();
         private static readonly string _modelPath = Path.Combine(Environment.CurrentDirectory, "Data", "TextClassificationModel.zip");
@@ -28,9 +18,9 @@ namespace TGA.Models
 
         private static Classifier _classifier;
 
-        public TgParser(Func<string, string> configFunc = null)
+        public TgParser(Func<string, string> configFunc)
         {
-            ConfigFunc = configFunc ?? Config;
+            ConfigFunc = configFunc;
             _client = new Client(ConfigFunc);
             _classifier = new Classifier();
             _classifier.LoadModel(_modelPath);
@@ -109,7 +99,7 @@ namespace TGA.Models
                     {
                         if (msg is Message message && HasTextContent(message))
                         {
-                            allMessages.Add(messageData);
+                            allMessages.Insert(0, messageData);
                             totalCount++;
                         }
                     }
@@ -136,7 +126,6 @@ namespace TGA.Models
                     Date = msg.Date.ToLocalTime(),
                     EditDate = msg.edit_date.ToLocalTime(),
                     Views = msg.views,
-                    //Content = GetMessageContent(msg),
                     Content = msg.message,
                     Category = _classifier.PredictCategory(msg.message),
                     Author = await GetMessageAuthor(msg, _selectedID),
@@ -190,11 +179,9 @@ namespace TGA.Models
         {
             if (!(msg is Message message)) return false;
 
-            // 1. Проверяем основной текст сообщения
             if (!string.IsNullOrWhiteSpace(message.message))
                 return true;
 
-            // 2. Проверяем медиа-контент с текстовыми атрибутами
             switch (message.media)
             {
                 case MessageMediaPoll poll:
@@ -206,8 +193,7 @@ namespace TGA.Models
 
                 case MessageMediaPhoto:
                 case MessageMediaDocument:
-                    // Для фото и документов проверяем атрибуты
-                    return message.entities?.Length > 0; // Если есть текстовые entities
+                    return message.entities?.Length > 0;
             }
 
             return false;
@@ -234,20 +220,10 @@ namespace TGA.Models
             return (reactions, totalCount);
         }
 
-        private string Config(string what)
+        public async Task<string> GetUserName()
         {
-            switch (what)
-            {
-                case "api_id": return Environment.GetEnvironmentVariable("api_id");
-                case "api_hash": return Environment.GetEnvironmentVariable("api_hash"); ;
-                case "phone_number": return Environment.GetEnvironmentVariable("phone_number");
-                case "verification_code":
-                    return Interaction.InputBox("Verification code:");
-                case "password":
-                    return Interaction.InputBox("Enter 2FA password");
-                case "session_pathname": return "session.dat";
-                default: return null;
-            }
+            await InitializeParser();
+            return _user.username;
         }
     }
 }
