@@ -29,7 +29,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <ListBox ItemsSource="{Binding Channels, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedItem="{Binding SelectedChannel}" Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Padding="0 60 0 0" 
+        <ListBox ItemsSource="{Binding Channels, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedItem="{Binding SelectedChannel}" Grid.Row="1" Grid.Column="0" Grid.RowSpan="3" Padding="0 0 0 0" 
                  FontSize="20" ScrollViewer.VerticalScrollBarVisibility="Hidden" Cursor="Hand" BorderThickness="0.8" BorderBrush="{StaticResource BorderColor}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -37,8 +37,13 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <TextBlock Text="{Binding UserName, StringFormat=User: @{0}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Foreground="{StaticResource ForeColor}" FontSize="22" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10 5"/>
-        <Button Style="{StaticResource BaseButtonStyle}" HorizontalAlignment="Right" Margin="10" Content="{StaticResource ExitImage}"/>
+        
+        <Border Background="{StaticResource ControlsColor}">
+            <DockPanel>
+                <TextBlock Text="{Binding UserName, StringFormat=User: @{0}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Foreground="{StaticResource ForeColor}" FontSize="22" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10 5"/>
+                <Button Command="{Binding ExitCommand}" Style="{StaticResource BaseButtonStyle}" HorizontalAlignment="Right" Margin="10" Content="{StaticResource ExitImage}"/>
+            </DockPanel>
+        </Border>
 
         <Border Grid.Column="1" Grid.ColumnSpan="2" Background="{StaticResource ControlsColor}" BorderThickness="0.3" BorderBrush="{StaticResource BorderColor}" Visibility="{Binding IsVisible}">
             <Grid>
