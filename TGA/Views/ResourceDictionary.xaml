@@ -7,37 +7,38 @@
     <Brush x:Key="ThemeColor">#50bee7</Brush>
     <Brush x:Key="ForeColor">#f5f5f5</Brush>
     <Brush x:Key="ControlsColor">#243545</Brush>
+    <Brush x:Key="ControlsHoverColor">#283D4F</Brush>
+    <Brush x:Key="ControlsPressColor">#30475C</Brush>
+    <Brush x:Key="ControlsSelectionColor">#2F6E87</Brush>
+    <Brush x:Key="BorderColor">#FF252525</Brush>
 
+    <Image x:Key="ExitImage" Source="/Assets/Resources/Exit.png" RenderOptions.BitmapScalingMode="HighQuality" Width="30"/>
 
     <Style x:Key="BaseButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{StaticResource ControlsColor}"/>
-        <Setter Property="Foreground" Value="{StaticResource ForeColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource ThemeColor}"/>
         <Setter Property="BorderBrush" Value="{StaticResource ForeColor}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Border CornerRadius="10" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2">
+                    <Border CornerRadius="0" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}">
                         <Grid>
-                            <Label Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="22" 
+                            <Label Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="20" 
                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
 
-                    <!--<ControlTemplate.Triggers>
+                    <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="{StaticResource ControlsHoverColor}" />
-                            <Setter Property="Foreground" Value="{StaticResource ForeColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource ThemeColor}" />
                         </Trigger>
 
                         <Trigger Property="IsPressed" Value="True">
                             <Setter Property="Background" Value="{StaticResource ControlsPressColor}" />
-                            <Setter Property="Foreground" Value="{StaticResource ForeColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource ThemeColor}" />
                         </Trigger>
-
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Foreground" Value="{StaticResource UnenabledColor}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>-->
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -47,7 +48,7 @@
         <Setter Property="Background" Value="{StaticResource ControlsColor}"/>
         <Setter Property="Foreground" Value="{StaticResource ForeColor}"/>
         <Setter Property="BorderBrush" Value="Black"/>
-        <Setter Property="BorderThickness" Value="0.75"/>
+        <Setter Property="BorderThickness" Value="0"/>
         <Style.Resources>
             <Style TargetType="Border">
                 <Setter Property="CornerRadius" Value="0"></Setter>
@@ -65,18 +66,44 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="true">
-                            <!--<Setter TargetName="Border" Property="Background" Value="{StaticResource ControlsPressColor}" />-->
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource ControlsSelectionColor}" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" SourceName="Border" Value="True" />
                                 <Condition Property="IsSelected" Value="False" />
                             </MultiTrigger.Conditions>
-                            <!--<Setter TargetName="Border" Property="Background" Value="{StaticResource ControlsHoverColor}" />-->
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource ControlsPressColor}" />
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="MessagesItemStyle" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Background" Value="{StaticResource ControlsColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource ForeColor}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border Name="Border" CornerRadius="10" Margin="15 10" Padding="5 10" Background="{TemplateBinding Background}" 
+                            HorizontalAlignment="Left" MaxWidth="450" MinWidth="100"
+                            SnapsToDevicePixels="true">
+                        <ContentPresenter />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="true" />
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" SourceName="Border" Value="True" />
+                                <Condition Property="IsSelected" Value="False" />
+                            </MultiTrigger.Conditions>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
 </ResourceDictionary>

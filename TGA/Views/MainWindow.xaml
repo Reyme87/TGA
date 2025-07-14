@@ -4,12 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TGA"
+        xmlns:vm="clr-namespace:TGA.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="900" FontFamily="{StaticResource MainFont}" Background="{StaticResource ControlsColor}" Foreground="{StaticResource ForeColor}">
+        Title="MainWindow" Height="600" Width="900" FontFamily="{StaticResource MainFont}" Background="{StaticResource ControlsColor}" Foreground="{StaticResource ForeColor}" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <ResourceDictionary Source="ResourceDictionary.xaml"/>
     </Window.Resources>
+
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
 
     <Grid Background="{StaticResource BackColor}">
         <Grid.ColumnDefinitions>
@@ -24,57 +29,52 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <ListBox Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Padding="10 60 10 10" FontSize="20" ScrollViewer.VerticalScrollBarVisibility="Hidden">
-            <ListBoxItem Margin="0,5,0,10">Элемент примера 1</ListBoxItem>
-            <ListBoxItem Margin="0,5,0,10">Элемент примера 2</ListBoxItem>
-            <ListBoxItem Margin="0,5,0,10">Элемент примера 3</ListBoxItem>
-            <ListBoxItem Margin="0,5,0,10">Элемент примера 4</ListBoxItem>
-            <ListBoxItem Margin="0,5,0,10">Элемент примера 5</ListBoxItem>
-            <ListBoxItem Margin="0,5,0,10">Элемент примера 6</ListBoxItem>
-            <ListBoxItem Margin="0,5,0,10">Элемент примера 7</ListBoxItem>
-            <ListBoxItem Margin="0,5,0,10">Элемент примера 8</ListBoxItem>
-            <ListBoxItem Margin="0,5,0,10">Элемент примера 9</ListBoxItem>
-            <ListBoxItem Margin="0,5,0,10">Элемент примера 10</ListBoxItem>
-            <ListBoxItem Margin="0,5,0,10">Элемент примера 10</ListBoxItem>
-            <ListBoxItem Margin="0,5,0,10">Элемент примера 10</ListBoxItem>
-            <ListBoxItem Margin="0,5,0,10">Элемент примера 10</ListBoxItem>
-            <ListBoxItem Margin="0,5,0,10">Элемент примера 10</ListBoxItem>
-            <ListBoxItem Margin="0,5,0,10">Элемент примера 10</ListBoxItem>
+        <ListBox ItemsSource="{Binding Channels, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedItem="{Binding SelectedChannel}" Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Padding="0 60 0 0" 
+                 FontSize="20" ScrollViewer.VerticalScrollBarVisibility="Hidden" Cursor="Hand" BorderThickness="0.8" BorderBrush="{StaticResource BorderColor}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Margin="10 10 0 10" Text="{Binding Name}" MaxWidth="280" MinWidth="280" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
-        <Label Content="Ваши каналы" Foreground="{StaticResource ForeColor}" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Text="{Binding UserName, StringFormat=User: @{0}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Foreground="{StaticResource ForeColor}" FontSize="22" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10 5"/>
+        <Button Style="{StaticResource BaseButtonStyle}" HorizontalAlignment="Right" Margin="10" Content="{StaticResource ExitImage}"/>
 
-        <Border Grid.Column="1" Grid.ColumnSpan="2" Background="{StaticResource ControlsColor}" BorderBrush="Black" BorderThickness="0.75">
+        <Border Grid.Column="1" Grid.ColumnSpan="2" Background="{StaticResource ControlsColor}" BorderThickness="0.3" BorderBrush="{StaticResource BorderColor}" Visibility="{Binding IsVisible}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0" Grid.ColumnSpan="2">
-                    <Label Content="Канал: Чемпионат" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 0 5 0"/>
-                    <Label Content="Автор: @championat" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10 -5 5 0"/>
+                <StackPanel Grid.Column="0" Grid.ColumnSpan="2" DataContext="{Binding SelectedChannel}">
+                    <TextBlock Text="{Binding Name, StringFormat=Канал: {0}}" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
+                    <TextBlock Text="{Binding Author, StringFormat=Автор: @{0}}" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10 5 5 0"/>
                 </StackPanel>
-                <Button Style="{StaticResource BaseButtonStyle}" Content="Извлечь данные" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center" Height="40" Margin="5"/>
             </Grid>
         </Border>
 
         <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="3">
-            <ListBox d:ItemsSource="{d:SampleData ItemCount=3}" Background="{StaticResource BackColor}">
+            <ListBox x:Name="MessagesListBox" ItemsSource="{Binding Messages, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Background="{StaticResource BackColor}" Margin="0 0 0 45" ScrollViewer.CanContentScroll="True" VirtualizingPanel.ScrollUnit="Pixel">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <ListBoxItem>
-                            <Border CornerRadius="10" Margin="15 10" Background="{StaticResource ControlsColor}" HorizontalAlignment="Left" MaxWidth="450" MinWidth="100">
-                                <StackPanel>
-                                    <Label Content="Тематика поста: Спорт" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
-                                    <TextBlock Text="Сообщение поста: Какое-то сообщение длинное" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10 5 5 0"/>
-                                    <Label Content="Кол-во просмотров: 47.6К" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
-                                    <Label Content="Кол-во реакций: 1245" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
-                                </StackPanel>
-                            </Border>
+                        <ListBoxItem Style="{StaticResource MessagesItemStyle}">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Category, StringFormat=Тематика: {0}}" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
+                                <TextBlock Text="{Binding Content, StringFormat=Сообщение: {0}}" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10 5 5 0"/>
+                                <TextBlock Text="{Binding Views, StringFormat=Кол-во просмотров: {0}}" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
+                                <TextBlock Text="{Binding TotalReactionsCount, StringFormat=Кол-во реакций: {0}}" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
+                            </StackPanel>
                         </ListBoxItem>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+        </Border>
+        <Button x:Name="ExportButton" Command="{Binding ExportDataCommand}" Style="{StaticResource BaseButtonStyle}" Content="Извлечь данные" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="45" Visibility="{Binding IsVisible}" Click="ExportButton_Click"/>
+        <Border x:Name="NotificationBorder" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" CornerRadius="10" Visibility="Hidden"
+                VerticalAlignment="Center" HorizontalAlignment="Center" Height="30" Margin="10"
+                Background="{StaticResource ForeColor}" Opacity="0">
+            <Label Content="Данные извлечены в TelegramData" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16"/>
         </Border>
     </Grid>
 </Window>

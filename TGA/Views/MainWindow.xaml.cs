@@ -1,10 +1,12 @@
-﻿using System.Text;
+﻿using System.Collections.Specialized;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -19,11 +21,27 @@ namespace TGA
         public MainWindow()
         {
             InitializeComponent();
+            ((INotifyCollectionChanged)MessagesListBox.Items).CollectionChanged += Items_CollectionChanged;
         }
 
-        private void ListBox_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
+        private void Items_CollectionChanged(object? sender, EventArgs e)
         {
+            Border border = (Border)VisualTreeHelper.GetChild(MessagesListBox, 0);
+            ScrollViewer scrollViewer = (ScrollViewer)VisualTreeHelper.GetChild(border, 0);
+            scrollViewer.ScrollToBottom();
+        }
 
+        private void ExportButton_Click(object sender, RoutedEventArgs e)
+        {
+            DoubleAnimation anim = new DoubleAnimation();
+            anim.From = 0;
+            anim.To = 3;
+            anim.AutoReverse = true;
+            anim.Duration = TimeSpan.FromSeconds(1.5);
+            anim.Completed += (s, e) => NotificationBorder.Visibility = Visibility.Hidden;
+            anim.EasingFunction = new QuadraticEase();
+            NotificationBorder.Visibility = Visibility.Visible;
+            NotificationBorder.BeginAnimation(OpacityProperty, anim);
         }
     }
 }
