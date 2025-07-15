@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TGA.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="api_id" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">24823414</Value>
+    </Setting>
+    <Setting Name="api_hash" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">510c1c650cbbf268f52e2bb2679623ba</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

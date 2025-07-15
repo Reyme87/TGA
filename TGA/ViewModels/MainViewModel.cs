@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using TGA.Commands;
 using TGA.Models;
+using TGA.Properties;
 using TGA.ViewModels.Base;
 
 namespace TGA.ViewModels
@@ -177,8 +178,8 @@ namespace TGA.ViewModels
         {
             switch (what)
             {
-                case "api_id": return Environment.GetEnvironmentVariable("api_id");
-                case "api_hash": return Environment.GetEnvironmentVariable("api_hash");
+                case "api_id": return Settings.Default.api_id;
+                case "api_hash": return Settings.Default.api_hash;
                 case "phone_number":
                     if (GetInfo("phone.json") == null || GetInfo("phone.json") == "")
                     {
