@@ -30,7 +30,7 @@
         </Grid.RowDefinitions>
 
         <ListBox ItemsSource="{Binding Channels, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedItem="{Binding SelectedChannel}" Grid.Row="1" Grid.Column="0" Grid.RowSpan="3" Padding="0 0 0 0" 
-                 FontSize="20" ScrollViewer.VerticalScrollBarVisibility="Hidden" Cursor="Hand" BorderThickness="0.8" BorderBrush="{StaticResource BorderColor}">
+                 FontSize="20" ScrollViewer.VerticalScrollBarVisibility="Hidden" Cursor="Hand" BorderThickness="0.8" BorderBrush="{StaticResource BorderColor}" VirtualizingPanel.ScrollUnit="Pixel">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Margin="10 10 0 10" Text="{Binding Name}" MaxWidth="280" MinWidth="280" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis"/>
@@ -69,6 +69,7 @@
                                 <TextBlock Text="{Binding Content, StringFormat=Сообщение: {0}}" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10 5 5 0"/>
                                 <TextBlock Text="{Binding Views, StringFormat=Кол-во просмотров: {0}}" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
                                 <TextBlock Text="{Binding TotalReactionsCount, StringFormat=Кол-во реакций: {0}}" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
+                                <TextBlock Text="{Binding Date, StringFormat=Дата публикации: {0}, Converter={StaticResource DateConverter}}" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
                             </StackPanel>
                         </ListBoxItem>
                     </DataTemplate>
@@ -81,5 +82,12 @@
                 Background="{StaticResource ForeColor}" Opacity="0">
             <Label Content="Данные извлечены в TelegramData" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16"/>
         </Border>
+        <Border Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" 
+                VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0 50"
+                Background="{StaticResource ControlsColor}" CornerRadius="15" Visibility="{Binding TextVisibility}">
+            <Label Content="Выберите канал" FontSize="20" Foreground="{StaticResource ForeColor}" Padding="10 5"/>
+        </Border>
+
+
     </Grid>
 </Window>

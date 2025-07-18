@@ -18,6 +18,7 @@ namespace TGA.ViewModels
 
         private readonly static string _outputDir = "TelegramData";
         private Visibility _isVisible;
+        private Visibility _textVisibility;
         private ObservableCollection<ChannelModel> _channels;
         private ObservableCollection<MessageData> _messages;
         private string _phoneNumber = "";
@@ -48,6 +49,14 @@ namespace TGA.ViewModels
             set
             {
                 Set(ref _isVisible, value);
+            }
+        }
+        public Visibility TextVisibility
+        {
+            get => _textVisibility;
+            set
+            {
+                Set(ref _textVisibility, value);
             }
         }
         private TgParser _parser;
@@ -117,13 +126,13 @@ namespace TGA.ViewModels
             if (!Equals(SelectedChannel, null))
             {
                 IsVisible = Visibility.Visible;
+                TextVisibility = Visibility.Hidden;
                 return true;
             }
             IsVisible = Visibility.Hidden;
+            TextVisibility = Visibility.Visible;
             return false;
         }
-
-
 
         #endregion
 
