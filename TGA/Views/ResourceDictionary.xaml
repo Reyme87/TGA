@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:TGA">
 
     <FontFamily x:Key="MainFont">"pack://application:Assets/Fonts/#Open Sans</FontFamily>
 
@@ -14,6 +15,8 @@
 
     <Image x:Key="ExitImage" Source="/Assets/Resources/Exit.png" RenderOptions.BitmapScalingMode="HighQuality" Width="30"/>
 
+    <local:DateTimeToDateConverter x:Key="DateConverter"/>
+    
     <Style x:Key="BaseButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{StaticResource ControlsColor}"/>
         <Setter Property="Foreground" Value="{StaticResource ThemeColor}"/>

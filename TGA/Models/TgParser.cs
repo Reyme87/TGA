@@ -53,7 +53,7 @@ namespace TGA.Models
             var channels = new ObservableCollection<ChannelModel>();
             foreach (var chat in chatList)
             {
-                if (chat is Channel channel)
+                if (chat is Channel channel && channel.flags.HasFlag(Channel.Flags.broadcast))
                 {
                     channels.Add(new ChannelModel(chat.ID, chat.Title, chat.MainUsername));
                 }
@@ -123,7 +123,7 @@ namespace TGA.Models
                 var messageData = new MessageData
                 {
                     Id = msg.ID,
-                    Date = msg.Date.ToLocalTime(),
+                    Date = msg.Date.ToUniversalTime(),
                     EditDate = msg.edit_date.ToLocalTime(),
                     Views = msg.views,
                     Content = msg.message,
