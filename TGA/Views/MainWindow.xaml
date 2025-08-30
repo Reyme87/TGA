@@ -1,0 +1,93 @@
+﻿<Window x:Class="TGA.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TGA"
+        xmlns:vm="clr-namespace:TGA.ViewModels"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="900" FontFamily="{StaticResource MainFont}" Background="{StaticResource ControlsColor}" Foreground="{StaticResource ForeColor}" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <ResourceDictionary Source="ResourceDictionary.xaml"/>
+    </Window.Resources>
+
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+
+    <Grid Background="{StaticResource BackColor}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.35*"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <ListBox ItemsSource="{Binding Channels, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedItem="{Binding SelectedChannel}" Grid.Row="1" Grid.Column="0" Grid.RowSpan="3" Padding="0 0 0 0" 
+                 FontSize="20" ScrollViewer.VerticalScrollBarVisibility="Hidden" Cursor="Hand" BorderThickness="0.8" BorderBrush="{StaticResource BorderColor}" VirtualizingPanel.ScrollUnit="Pixel">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Margin="10 10 0 10" Text="{Binding Name}" MaxWidth="280" MinWidth="280" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+        <Border Background="{StaticResource ControlsColor}">
+            <DockPanel>
+                <TextBlock Text="{Binding UserName, StringFormat=User: @{0}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Foreground="{StaticResource ForeColor}" FontSize="22" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10 5"/>
+                <Button Command="{Binding ExitCommand}" Style="{StaticResource BaseButtonStyle}" HorizontalAlignment="Right" Margin="10" Content="{StaticResource ExitImage}"/>
+            </DockPanel>
+        </Border>
+
+        <Border Grid.Column="1" Grid.ColumnSpan="2" Background="{StaticResource ControlsColor}" BorderThickness="0.3" BorderBrush="{StaticResource BorderColor}" Visibility="{Binding IsVisible}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Grid.ColumnSpan="2" DataContext="{Binding SelectedChannel}">
+                    <TextBlock Text="{Binding Name, StringFormat=Канал: {0}}" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
+                    <TextBlock Text="{Binding Author, StringFormat=Автор: @{0}}" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10 5 5 0"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="3">
+            <ListBox x:Name="MessagesListBox" ItemsSource="{Binding Messages, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Background="{StaticResource BackColor}" Margin="0 0 0 45" ScrollViewer.CanContentScroll="True" VirtualizingPanel.ScrollUnit="Pixel">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <ListBoxItem Style="{StaticResource MessagesItemStyle}">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Category, StringFormat=Тематика: {0}}" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
+                                <TextBlock Text="{Binding Content, StringFormat=Сообщение: {0}}" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10 5 5 0"/>
+                                <TextBlock Text="{Binding Views, StringFormat=Кол-во просмотров: {0}}" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
+                                <TextBlock Text="{Binding TotalReactionsCount, StringFormat=Кол-во реакций: {0}}" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
+                                <TextBlock Text="{Binding Date, StringFormat=Дата публикации: {0}, Converter={StaticResource DateConverter}}" Foreground="{StaticResource ForeColor}" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 5 5 0"/>
+                            </StackPanel>
+                        </ListBoxItem>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
+        <Button x:Name="ExportButton" Command="{Binding ExportDataCommand}" Style="{StaticResource BaseButtonStyle}" Content="Извлечь данные" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="45" Visibility="{Binding IsVisible}" Click="ExportButton_Click"/>
+        <Border x:Name="NotificationBorder" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" CornerRadius="10" Visibility="Hidden"
+                VerticalAlignment="Center" HorizontalAlignment="Center" Height="30" Margin="10"
+                Background="{StaticResource ForeColor}" Opacity="0">
+            <Label Content="Данные извлечены в TelegramData" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16"/>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" 
+                VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0 50"
+                Background="{StaticResource ControlsColor}" CornerRadius="15" Visibility="{Binding TextVisibility}">
+            <Label Content="Выберите канал" FontSize="20" Foreground="{StaticResource ForeColor}" Padding="10 5"/>
+        </Border>
+
+
+    </Grid>
+</Window>
