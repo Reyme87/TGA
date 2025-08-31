@@ -1,6 +1,10 @@
 <p align="center"> 
-  TG Analyser
+  <img width="300" height="300" alt="TGA logo" src="https://github.com/user-attachments/assets/b9a56936-25c6-4969-bf32-be8e8aa52f25"/>
 </p>
+
+<h1 align="center">
+  TG Analyser
+</h1>
 
 <p align="center">
    <img src="https://img.shields.io/badge/.Net-9.0-blueviolet?style=flat&labelColor=grey" alt=".Net">
