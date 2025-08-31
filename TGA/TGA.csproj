@@ -11,6 +11,8 @@
 
   <ItemGroup>
     <None Remove="Assets\Resources\Exit.png" />
+    <None Remove="Assets\Resources\TGA logo.png" />
+    <None Remove="Assets\Resources\TGA-logo.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +23,8 @@
 
   <ItemGroup>
     <Resource Include="Assets\Resources\Exit.png" />
+    <Resource Include="Assets\Resources\TGA logo.png" />
+    <Resource Include="Assets\Resources\TGA-logo.ico" />
   </ItemGroup>
 
   <ItemGroup>

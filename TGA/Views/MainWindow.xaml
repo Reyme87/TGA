@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:TGA"
         xmlns:vm="clr-namespace:TGA.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="900" FontFamily="{StaticResource MainFont}" Background="{StaticResource ControlsColor}" Foreground="{StaticResource ForeColor}" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+        Title="TG Analyser" Height="600" Width="900" FontFamily="{StaticResource MainFont}" Background="{StaticResource ControlsColor}" Foreground="{StaticResource ForeColor}" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Icon="/Assets/Resources/TGA-logo.ico">
 
     <Window.Resources>
         <ResourceDictionary Source="ResourceDictionary.xaml"/>
